@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "title": "Welcome to the System",
+    "content": "This is the customer management dashboard for handling business operations efficiently.",
+    "image_url": "https://via.placeholder.com/600x400",
+    "created_at": "2026-04-29T10:00:00Z",
+    "author_id": "admin_1"
+  },
+  {
+    "id": 2,
+    "title": "Managing Customers",
+    "content": "You can add, update, and view customer details in the system.",
+    "image_url": "https://via.placeholder.com/600x400",
+    "created_at": "2026-04-28T12:30:00Z",
+    "author_id": "admin_1"
+  },
+  {
+    "id": 3,
+    "title": "Appointments System",
+    "content": "Schedule and track customer appointments easily through the dashboard.",
+    "image_url": "https://via.placeholder.com/600x400",
+    "created_at": "2026-04-27T09:15:00Z",
+    "author_id": "staff_2"
+  }
+]
