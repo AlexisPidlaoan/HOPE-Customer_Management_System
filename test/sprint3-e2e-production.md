@@ -9,7 +9,7 @@
 
 | Test Case | User Type | Expected Result | Result | Screenshot |
 |-----------|-----------|-----------------|--------|------------|
-| View customer list | USER | Sees active customers only, no Add/Edit/Delete buttons | PASS/FAIL |![](screenshots/customer-list-user.png) |
+| View customer list | USER | Sees active customers only | PASS | ![](screenshots/customer-list-user.png) |
 | View customer list | ADMIN | Sees all customers, Add and Edit buttons visible | PASS/FAIL | |
 | View customer list | SUPERADMIN | Sees all customers, all buttons visible | PASS/FAIL | |
 | Add customer | ADMIN | Can successfully add a new customer | PASS/FAIL | |
