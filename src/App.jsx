@@ -5,6 +5,7 @@ import AdminRoute from './components/guards/AdminRoute';
 import SuperAdminRoute from './components/guards/SuperAdminRoute';
 import AppShell from './components/AppShell';
 import LoginPage from './pages/LoginPage';
+import AuthCallbackPage from './pages/AuthCallbackPage';
 import CustomerListPage from './pages/CustomerListPage';
 import CustomerDetailPage from './pages/CustomerDetailPage';
 import SalesListPage from './pages/SalesListPage';
@@ -24,6 +25,7 @@ export default function App() {
       <Routes>
         {/* Public */}
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/auth/callback" element={<AuthCallbackPage />} />
 
         {/* Protected shell */}
         <Route

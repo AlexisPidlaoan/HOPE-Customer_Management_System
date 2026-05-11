@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useCustomers } from '../../hooks/useCustomers';
+import { useAuth } from '../../context/AuthContext';
 import { useToast } from '../../components/ui/ToastProvider';
 import Spinner from '../../components/ui/Spinner';
 import EmptyState from '../../components/ui/EmptyState';
@@ -8,6 +9,7 @@ import { truncate } from '../../lib/formatters';
 
 export default function DeletedCustomersPage() {
   const { customers, loading, recoverCustomer } = useCustomers({ includeInactive: true });
+  const { profile } = useAuth();
   const toast = useToast();
   const [search, setSearch] = useState('');
   const [recoverTarget, setRecoverTarget] = useState(null);
@@ -23,7 +25,7 @@ export default function DeletedCustomersPage() {
   const handleRecover = async () => {
     if (!recoverTarget) return;
     setWorking(true);
-    const { error } = await recoverCustomer(recoverTarget.custno);
+    const { error } = await recoverCustomer(recoverTarget.custno, profile?.email);
     if (error) toast.error(error.message);
     else toast.success(`${recoverTarget.custname} restored to ACTIVE.`);
     setWorking(false);

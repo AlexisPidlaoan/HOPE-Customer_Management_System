@@ -37,7 +37,7 @@ export default function AppShell() {
   };
 
   const isReportsActive = location.pathname.startsWith('/admin/reports');
-  const canSeeAdmin = hasRight('ADM_USER');
+  const canSeeAdmin = hasRight('MANAGE_USERS');
   const isSuperAdmin = profile?.user_type === 'SUPERADMIN';
 
   return (

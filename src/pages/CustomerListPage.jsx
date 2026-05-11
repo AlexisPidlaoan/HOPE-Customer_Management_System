@@ -71,7 +71,7 @@ export default function CustomerListPage() {
   };
 
   const handleDelete = async (custno) => {
-    const { error } = await softDeleteCustomer(custno);
+    const { error } = await softDeleteCustomer(custno, profile?.email);
     if (error) toast.error(error.message);
     else { toast.success('Customer deactivated.'); setDeleteTarget(null); }
   };
@@ -145,7 +145,7 @@ export default function CustomerListPage() {
                               Edit
                             </button>
                           )}
-                          {isSuperAdmin && (
+                          {hasRight('DELETE_CUSTOMER') && (
                             <button
                               id={`deleteBtn-${c.custno}`}
                               className="btn btn-danger text-xs py-1 px-2"

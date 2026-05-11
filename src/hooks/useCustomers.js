@@ -1,6 +1,11 @@
 import { supabase } from '../lib/supabase';
 import { useState, useEffect, useCallback } from 'react';
 
+function makeStamp(action, email) {
+  const now = new Date().toLocaleString('en-PH', { dateStyle: 'short', timeStyle: 'short' });
+  return `${action} by ${email || 'system'} on ${now}`;
+}
+
 export function useCustomers({ includeInactive = false } = {}) {
   const [customers, setCustomers] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -30,20 +35,26 @@ export function useCustomers({ includeInactive = false } = {}) {
     return { error };
   };
 
-  // Core Rule 2: soft-delete only — sets record_status to INACTIVE
-  const softDeleteCustomer = async (custno) => {
+  // Core Rule 2: soft-delete only — sets record_status to INACTIVE + updates stamp
+  const softDeleteCustomer = async (custno, userEmail) => {
     const { error } = await supabase
       .from('customer')
-      .update({ record_status: 'INACTIVE' })
+      .update({
+        record_status: 'INACTIVE',
+        stamp: makeStamp('DEACTIVATED', userEmail),
+      })
       .eq('custno', custno);
     if (!error) await fetch();
     return { error };
   };
 
-  const recoverCustomer = async (custno) => {
+  const recoverCustomer = async (custno, userEmail) => {
     const { error } = await supabase
       .from('customer')
-      .update({ record_status: 'ACTIVE' })
+      .update({
+        record_status: 'ACTIVE',
+        stamp: makeStamp('REACTIVATED', userEmail),
+      })
       .eq('custno', custno);
     if (!error) await fetch();
     return { error };
@@ -51,3 +62,4 @@ export function useCustomers({ includeInactive = false } = {}) {
 
   return { customers, loading, error, refetch: fetch, addCustomer, editCustomer, softDeleteCustomer, recoverCustomer };
 }
+
