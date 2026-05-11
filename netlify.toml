@@ -1,0 +1,15 @@
+# Netlify configuration for HopeCMS (Vite + React SPA)
+
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+# Environment variables needed (set in Netlify Dashboard > Site Settings > Environment Variables):
+#   VITE_SUPABASE_URL       = https://your-project.supabase.co
+#   VITE_SUPABASE_ANON_KEY  = your-anon-key
+
+# SPA fallback — all routes serve index.html so React Router handles them
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
