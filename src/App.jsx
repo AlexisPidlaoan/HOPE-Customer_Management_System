@@ -18,6 +18,10 @@ import ProductRevenueReport from './pages/admin/reports/ProductRevenueReport';
 import DashboardPage from './pages/admin/DashboardPage';
 import RbacSettingsPage from './pages/admin/RbacSettingsPage';
 import AuditLogsPage from './pages/admin/AuditLogsPage';
+import { Routes, Route } from 'react-router-dom';
+import ProtectedRoute from './components/ProtectedRoute';
+import Dashboard from './pages/Dashboard';
+import Login from './pages/Login';
 
 export default function App() {
   return (
@@ -56,6 +60,21 @@ export default function App() {
         {/* Catch-all */}
         <Route path="*" element={<Navigate to="/customers" replace />} />
       </Routes>
+
+        <Routes>
+      {/* Public route */}
+      <Route path="/login" element={<Login />} />
+
+      {/* Protected route */}
+      <Route
+        path="/dashboard"
+        element={
+          <ProtectedRoute>
+            <Dashboard />
+          </ProtectedRoute>
+        }
+      />
+    </Routes>
     </ToastProvider>
   );
 }
