@@ -1,5 +1,5 @@
 # Sprint 3 — E2E Production Test Report
-**Tester:** M5 — QA / Documentation Specialist
+**Tester:** M5 — QA/Docs
 **Date:** May 11, 2026
 **Live URL:** https://hopecms.netlify.app
 
