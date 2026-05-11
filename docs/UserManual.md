@@ -1,8 +1,8 @@
 # HopeCMS User Manual
 **Version:** 1.0  
 **Prepared by:** M5 — QA / Documentation Specialist  
-**Date:** [date]  
-**Live URL:** [your deployed app URL]
+**Date:** May 11, 2026  
+**Live URL:** https://hopecms.netlify.app
 
 ---
 
@@ -19,8 +19,7 @@
 
 ## 1. Registration
 
-### Email Registration
-1. Go to the app URL
+1. Go to https://hopecms.netlify.app
 2. Click **Register** or **Sign Up**
 3. Fill in the following fields:
    - First Name
@@ -33,32 +32,16 @@
 
 ![](screenshots/register-email.png)
 
-### Google Registration
-1. Click **Sign in with Google**
-2. Select your Google account
-3. You will be redirected to the app
-4. Your account will be **INACTIVE** until an Admin activates it
-
-![](screenshots/register-google.png)
-
 ---
 
 ## 2. Login
 
-### Email Login
-1. Go to the app URL
+1. Go to https://hopecms.netlify.app
 2. Enter your **Email** and **Password**
 3. Click **Login**
 4. If your account is INACTIVE, you will see an error message
 
 ![](screenshots/login-email.png)
-
-### Google Login
-1. Click **Sign in with Google**
-2. Select your Google account
-3. You will be redirected to the dashboard
-
-![](screenshots/login-google.png)
 
 ---
 
@@ -68,40 +51,44 @@
 - All user types can view the customer list
 - **USER** — sees active customers only, no action buttons
 - **ADMIN** — sees all customers, Add and Edit buttons visible
-- **SUPERADMIN** — sees all customers, all buttons visible including Delete
+- **SUPERADMIN** — sees all customers, Edit and Deactivate buttons visible
 
 ![](screenshots/customer-list-user.png)
 
 ### Adding a Customer *(ADMIN / SUPERADMIN only)*
-1. Click the **Add Customer** button
-2. Fill in the customer details
-3. Click **Save**
+1. Click the **+ New Customer** button
+2. Fill in the following fields:
+   - Customer ID
+   - Customer Name
+   - Address
+   - Payment Term
+3. Click **+ Add Customer**
 4. The new customer appears in the list
 
-![](screenshots/customer-add.png)
+![](screenshots/customer-add-admin.png)
 
 ### Editing a Customer *(ADMIN / SUPERADMIN only)*
 1. Find the customer in the list
 2. Click the **Edit** button on their row
 3. Update the fields
-4. Click **Save**
+4. Click **Save Changes**
 
-![](screenshots/customer-edit.png)
+![](screenshots/customer-edit-admin.png)
 
-### Soft-Deleting a Customer *(SUPERADMIN only)*
+### Deactivating a Customer *(SUPERADMIN only)*
 1. Find the customer in the list
-2. Click the **Delete** button on their row
-3. Confirm the action
-4. The customer disappears from USER and ADMIN view but is not permanently deleted
+2. Click the **Deactivate** button on their row
+3. The customer becomes inactive and disappears from USER view
+4. The customer is NOT permanently deleted and can be recovered
 
-![](screenshots/customer-delete.png)
+![](screenshots/customer-list-superadmin.png)
 
 ### Viewing Deleted Customers *(ADMIN / SUPERADMIN only)*
-1. Navigate to the **Deleted Customers** page
-2. See all INACTIVE customers
-3. Click **Recover** to restore a customer
+1. Navigate to the **Deleted Customers** page from the sidebar
+2. See all inactive customers
+3. Click **Recover** to restore a customer to active status
 
-![](screenshots/customer-deleted-list.png)
+![](screenshots/customer-deleted-admin.png)
 
 ---
 
@@ -115,76 +102,84 @@
    - Sales Date
    - Employee No
 
-![](screenshots/sales-transactions.png)
+![](screenshots/sales-transactions-user.png)
 
 ### Viewing Transaction Line Items
 1. From the transaction list, click on a **transaction**
 2. You will see the line items showing:
+   - Product Code
    - Product Description
+   - Unit
    - Quantity
    - Unit Price *(latest price from Price History)*
+   - Subtotal
 
-![](screenshots/sales-lineitems.png)
+![](screenshots/sales-lineitems-user.png)
 
 ---
 
 ## 5. Product Catalogue
 
-- Navigate to the **Products** page
+- Navigate to the **Products** page from the sidebar
 - This page is **view-only** — no Add, Edit, or Delete buttons for any user type
 - Displays the following columns:
   - Product Code
   - Description
   - Unit
   - Current Price
+  - Price As Of
 
-![](screenshots/products-page.png)
+![](screenshots/products-page-user.png)
 
 ---
 
 ## 6. Reports
 
-### Customer Sales Summary
-- Shows a summary of sales per customer
-- Use the search bar to filter by customer name
-- Columns: Customer Name, Total Sales, Number of Transactions
+> **Note:** Reports are only available to ADMIN and SUPERADMIN accounts.
 
-![](screenshots/report-sales-summary.png)
+### Customer Sales Summary
+- Shows aggregated spend and transaction counts per customer
+- Displays total customers, total transactions, and total revenue
+- Use the search bar to filter by customer name
+
+![](screenshots/report-customer-summary-admin.png)
 
 ### Top Customers
-- Shows the top 10 customers by total sales
-- Displayed as a chart or leaderboard
+- Shows the top 10 customers by total spend
+- Displayed as a bar chart and a rankings leaderboard
 
-![](screenshots/report-top-customers.png)
+![](screenshots/report-top-customers-admin.png)
 
 ### Product Revenue
-- Shows revenue generated per product
-- Columns: Product Name, Total Quantity Sold, Total Revenue
+- Shows total quantity sold and revenue per product
+- Displays total products, units sold, and total revenue
+- Includes revenue share percentage per product
 
-![](screenshots/report-product-revenue.png)
+![](screenshots/report-product-revenue-admin.png)
 
 ---
 
 ## 7. Admin Activation
 
 ### Activating a User *(ADMIN / SUPERADMIN only)*
-1. Navigate to **User Management**
+1. Navigate to **User Management** from the sidebar
 2. Find the user with **INACTIVE** status
 3. Click **Activate**
 4. Their status changes to **ACTIVE** and they can now log in
 
-![](screenshots/admin-activate.png)
+![](screenshots/user-management-admin.png)
 
 ### Deactivating a User *(ADMIN / SUPERADMIN only)*
-1. Navigate to **User Management**
+1. Navigate to **User Management** from the sidebar
 2. Find the user with **ACTIVE** status
 3. Click **Deactivate**
 4. Their status changes to **INACTIVE**
 
-![](screenshots/admin-deactivate.png)
+![](screenshots/user-management-admin.png)
 
 ### SUPERADMIN Protection
 - The **Activate/Deactivate** buttons are **disabled** on SUPERADMIN rows
 - ADMIN accounts cannot modify SUPERADMIN accounts
+- This protection is enforced at both the UI and database level
 
-![](screenshots/admin-superadmin-protected.png)
+![](screenshots/user-management-admin.png)
