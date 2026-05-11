@@ -1,6 +1,13 @@
 # Logs
 logs
 *.log
+
+# Environment secrets
+.env
+.env.local
+
+# Scratch / temp files
+scratch/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*

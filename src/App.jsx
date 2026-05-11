@@ -1,107 +1,59 @@
-import { useState, useEffect } from 'react'
-import './App.css'
+import { Routes, Route, Navigate } from 'react-router-dom';
+import { ToastProvider } from './components/ui/ToastProvider';
+import PrivateRoute from './components/guards/PrivateRoute';
+import AdminRoute from './components/guards/AdminRoute';
+import SuperAdminRoute from './components/guards/SuperAdminRoute';
+import AppShell from './components/AppShell';
+import LoginPage from './pages/LoginPage';
+import CustomerListPage from './pages/CustomerListPage';
+import CustomerDetailPage from './pages/CustomerDetailPage';
+import SalesListPage from './pages/SalesListPage';
+import ProductCataloguePage from './pages/ProductCataloguePage';
+import UserManagementPage from './pages/admin/UserManagementPage';
+import DeletedCustomersPage from './pages/admin/DeletedCustomersPage';
+import CustomerSummaryReport from './pages/admin/reports/CustomerSummaryReport';
+import TopCustomersReport from './pages/admin/reports/TopCustomersReport';
+import ProductRevenueReport from './pages/admin/reports/ProductRevenueReport';
+import DashboardPage from './pages/admin/DashboardPage';
+import RbacSettingsPage from './pages/admin/RbacSettingsPage';
+import AuditLogsPage from './pages/admin/AuditLogsPage';
 
-function App() {
-  const [customers, setCustomers] = useState([])
-  const [form, setForm] = useState({ name: '', email: '', phone: '' })
-  const [editingId, setEditingId] = useState(null)
-
-  useEffect(() => {
-    const stored = localStorage.getItem('customers')
-    if (stored) setCustomers(JSON.parse(stored))
-  }, [])
-
-  useEffect(() => {
-    localStorage.setItem('customers', JSON.stringify(customers))
-  }, [customers])
-
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    if (editingId) {
-      setCustomers(customers.map(c => c.id === editingId ? { ...c, ...form } : c))
-      setEditingId(null)
-    } else {
-      setCustomers([...customers, { ...form, id: Date.now() }])
-    }
-    setForm({ name: '', email: '', phone: '' })
-  }
-
-  const handleEdit = (customer) => {
-    setForm({ name: customer.name, email: customer.email, phone: customer.phone })
-    setEditingId(customer.id)
-  }
-
-  const handleDelete = (id) => {
-    setCustomers(customers.filter(c => c.id !== id))
-  }
-
+export default function App() {
   return (
-    <div className="min-h-screen bg-gray-100 p-4">
-      <div className="max-w-4xl mx-auto bg-white rounded-lg shadow-md p-6">
-        <h1 className="text-3xl font-bold text-center mb-6">Customer Management System</h1>
-        
-        <form onSubmit={handleSubmit} className="mb-6 space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <input
-              type="text"
-              placeholder="Name"
-              value={form.name}
-              onChange={(e) => setForm({ ...form, name: e.target.value })}
-              className="border border-gray-300 rounded px-3 py-2"
-              required
-            />
-            <input
-              type="email"
-              placeholder="Email"
-              value={form.email}
-              onChange={(e) => setForm({ ...form, email: e.target.value })}
-              className="border border-gray-300 rounded px-3 py-2"
-              required
-            />
-            <input
-              type="tel"
-              placeholder="Phone"
-              value={form.phone}
-              onChange={(e) => setForm({ ...form, phone: e.target.value })}
-              className="border border-gray-300 rounded px-3 py-2"
-              required
-            />
-          </div>
-          <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
-            {editingId ? 'Update Customer' : 'Add Customer'}
-          </button>
-          {editingId && <button type="button" onClick={() => { setEditingId(null); setForm({ name: '', email: '', phone: '' }) }} className="ml-2 bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">Cancel</button>}
-        </form>
+    <ToastProvider>
+      <Routes>
+        {/* Public */}
+        <Route path="/login" element={<LoginPage />} />
 
-        <div className="overflow-x-auto">
-          <table className="min-w-full table-auto">
-            <thead>
-              <tr className="bg-gray-200">
-                <th className="px-4 py-2 text-left">Name</th>
-                <th className="px-4 py-2 text-left">Email</th>
-                <th className="px-4 py-2 text-left">Phone</th>
-                <th className="px-4 py-2 text-left">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {customers.map(customer => (
-                <tr key={customer.id} className="border-t">
-                  <td className="px-4 py-2">{customer.name}</td>
-                  <td className="px-4 py-2">{customer.email}</td>
-                  <td className="px-4 py-2">{customer.phone}</td>
-                  <td className="px-4 py-2 space-x-2">
-                    <button onClick={() => handleEdit(customer)} className="bg-yellow-500 text-white px-2 py-1 rounded hover:bg-yellow-600">Edit</button>
-                    <button onClick={() => handleDelete(customer.id)} className="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600">Delete</button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-          {customers.length === 0 && <p className="text-center py-4">No customers yet.</p>}
-        </div>
-      </div>
-    </div>
-  )
+        {/* Protected shell */}
+        <Route
+          path="/"
+          element={
+            <PrivateRoute>
+              <AppShell />
+            </PrivateRoute>
+          }
+        >
+          <Route index element={<Navigate to="/customers" replace />} />
+          <Route path="customers" element={<CustomerListPage />} />
+          <Route path="customers/:custno" element={<CustomerDetailPage />} />
+          <Route path="sales" element={<SalesListPage />} />
+          <Route path="products" element={<ProductCataloguePage />} />
+
+          {/* Admin routes */}
+          <Route path="admin/dashboard" element={<SuperAdminRoute><DashboardPage /></SuperAdminRoute>} />
+          <Route path="admin/users" element={<AdminRoute><UserManagementPage /></AdminRoute>} />
+          <Route path="admin/deleted-customers" element={<AdminRoute><DeletedCustomersPage /></AdminRoute>} />
+          <Route path="admin/reports/customer-summary" element={<AdminRoute><CustomerSummaryReport /></AdminRoute>} />
+          <Route path="admin/reports/top-customers" element={<AdminRoute><TopCustomersReport /></AdminRoute>} />
+          <Route path="admin/reports/product-revenue" element={<AdminRoute><ProductRevenueReport /></AdminRoute>} />
+          <Route path="admin/rbac" element={<SuperAdminRoute><RbacSettingsPage /></SuperAdminRoute>} />
+          <Route path="admin/audit-logs" element={<SuperAdminRoute><AuditLogsPage /></SuperAdminRoute>} />
+        </Route>
+
+        {/* Catch-all */}
+        <Route path="*" element={<Navigate to="/customers" replace />} />
+      </Routes>
+    </ToastProvider>
+  );
 }
-
-export default App
