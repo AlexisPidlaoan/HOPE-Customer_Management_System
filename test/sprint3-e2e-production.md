@@ -16,7 +16,7 @@
 | Edit customer | ADMIN | Can successfully edit a customer | PASS | ![](screenshots/customer-edit-admin.png) |
 | Deactivate customer | SUPERADMIN | Customer becomes inactive, disappears from USER view | PASS | ![](screenshots/customer-list-superadmin.png) |
 | View deleted customers | ADMIN | Sees inactive customers in Deleted Customers page | PASS | ![](screenshots/customer-deleted-admin.png) |
-| Recover customer | ADMIN | Customer reappears in all views after recovery | PASS/FAIL | |
+| Recover customer | ADMIN | Customer reappears in all views after recovery | PASS/FAIL | ![](screenshots/customer-recover-admin.png) |
 
 ---
 
