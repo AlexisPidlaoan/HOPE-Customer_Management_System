@@ -18,6 +18,7 @@ import ProductRevenueReport from './pages/admin/reports/ProductRevenueReport';
 import DashboardPage from './pages/admin/DashboardPage';
 import RbacSettingsPage from './pages/admin/RbacSettingsPage';
 import AuditLogsPage from './pages/admin/AuditLogsPage';
+import UserDashboardPage from './pages/UserDashboardPage';
 
 export default function App() {
   return (
@@ -36,7 +37,8 @@ export default function App() {
             </PrivateRoute>
           }
         >
-          <Route index element={<Navigate to="/customers" replace />} />
+          <Route index element={<Navigate to="/dashboard" replace />} />
+          <Route path="dashboard" element={<UserDashboardPage />} />
           <Route path="customers" element={<CustomerListPage />} />
           <Route path="customers/:custno" element={<CustomerDetailPage />} />
           <Route path="sales" element={<SalesListPage />} />

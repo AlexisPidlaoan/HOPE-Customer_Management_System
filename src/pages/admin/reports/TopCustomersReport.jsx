@@ -79,8 +79,8 @@ export default function TopCustomersReport() {
                       <div className="font-semibold text-slate-800 text-sm">{r.custname}</div>
                       <div className="text-slate-400 text-xs font-mono">{r.custno}</div>
                     </td>
-                    <td className="text-right text-slate-600 font-semibold">{r.total_transactions}</td>
-                    <td className="text-right font-bold text-green-700">{formatCurrency(r.total_spend)}</td>
+                    <td className="text-right font-mono text-slate-600 font-semibold">{r.total_transactions}</td>
+                    <td className="text-right font-mono font-bold text-green-700">{formatCurrency(r.total_spend)}</td>
                   </tr>
                 ))}
               </tbody>

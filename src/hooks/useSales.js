@@ -1,7 +1,9 @@
 import { supabase } from '../lib/supabase';
+import { useAuth } from '../context/AuthContext';
 import { useState, useEffect, useCallback } from 'react';
 
 export function useSales({ custno } = {}) {
+  const { session } = useAuth();
   const [sales, setSales] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -17,7 +19,9 @@ export function useSales({ custno } = {}) {
     setLoading(false);
   }, [custno]);
 
-  useEffect(() => { fetch(); }, [fetch]);
+  useEffect(() => { 
+    if (session) fetch(); 
+  }, [fetch, session]);
 
   return { sales, loading, refetch: fetch };
 }

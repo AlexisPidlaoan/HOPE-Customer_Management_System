@@ -5,11 +5,13 @@ import { useRights } from '../hooks/useRights';
 import { getInitials } from '../lib/formatters';
 import Badge from './ui/Badge';
 
-const NAV = [
+const NAV_BASE = [
   { label: 'Customers', path: '/customers', icon: '👤' },
   { label: 'Sales', path: '/sales', icon: '📊' },
   { label: 'Products', path: '/products', icon: '📦' },
 ];
+
+const USER_DASHBOARD_NAV = { label: 'Dashboard', path: '/dashboard', icon: '🏠' };
 
 const ADMIN_NAV = [
   { label: 'User Management', path: '/admin/users', icon: '🛡' },
@@ -38,7 +40,15 @@ export default function AppShell() {
 
   const isReportsActive = location.pathname.startsWith('/admin/reports');
   const canSeeAdmin = hasRight('MANAGE_USERS');
+  const canSeeReports = hasRight('VIEW_REPORTS');
   const isSuperAdmin = profile?.user_type === 'SUPERADMIN';
+  const isUser = profile?.user_type === 'USER';
+
+  // Regular USERs see the User Dashboard; ADMIN/SUPERADMIN have their own dashboards
+  const NAV = [
+    ...(isUser ? [USER_DASHBOARD_NAV] : []),
+    ...NAV_BASE,
+  ];
 
   return (
     <div className="flex h-screen overflow-hidden" style={{ background: 'var(--color-bg)' }}>
@@ -88,26 +98,30 @@ export default function AppShell() {
                 </NavLink>
               ))}
 
-              {/* Reports sub-menu */}
-              <button
-                className={`nav-item w-full text-left ${isReportsActive ? 'text-blue-400' : ''}`}
-                onClick={() => setAdminOpen((o) => !o)}
-              >
-                <span className="text-base w-5 text-center">📈</span>
-                <span className="flex-1">Reports</span>
-                <span className="text-xs text-slate-600">{adminOpen ? '▾' : '▸'}</span>
-              </button>
+              {/* Reports sub-menu — requires VIEW_REPORTS right */}
+              {canSeeReports && (
+                <>
+                  <button
+                    className={`nav-item w-full text-left ${isReportsActive ? 'text-blue-400' : ''}`}
+                    onClick={() => setAdminOpen((o) => !o)}
+                  >
+                    <span className="text-base w-5 text-center">📈</span>
+                    <span className="flex-1">Reports</span>
+                    <span className="text-xs text-slate-600">{adminOpen ? '▾' : '▸'}</span>
+                  </button>
 
-              {adminOpen && REPORTS_NAV.map((item) => (
-                <NavLink
-                  key={item.path}
-                  to={item.path}
-                  className={({ isActive }) => `nav-item sub${isActive ? ' active' : ''}`}
-                >
-                  <span className="text-xs w-4 text-center">{item.icon}</span>
-                  {item.label}
-                </NavLink>
-              ))}
+                  {adminOpen && REPORTS_NAV.map((item) => (
+                    <NavLink
+                      key={item.path}
+                      to={item.path}
+                      className={({ isActive }) => `nav-item sub${isActive ? ' active' : ''}`}
+                    >
+                      <span className="text-xs w-4 text-center">{item.icon}</span>
+                      {item.label}
+                    </NavLink>
+                  ))}
+                </>
+              )}
             </div>
           )}
 

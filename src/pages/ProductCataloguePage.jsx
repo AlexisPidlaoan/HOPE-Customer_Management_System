@@ -52,7 +52,7 @@ export default function ProductCataloguePage() {
                   <th>Code</th>
                   <th>Description</th>
                   <th>Unit</th>
-                  <th className="text-right">Current Price</th>
+                  <th className="text-center">Current Price</th>
                   <th>Price As Of</th>
                 </tr>
               </thead>
@@ -62,7 +62,7 @@ export default function ProductCataloguePage() {
                     <td className="font-mono text-xs text-slate-500">{p.prodcode}</td>
                     <td className="font-medium text-slate-800">{p.description}</td>
                     <td className="text-slate-500 text-sm">{p.unit}</td>
-                    <td className="text-right font-bold text-slate-800">{formatCurrency(p.current_price)}</td>
+                    <td className="text-center font-mono font-bold text-slate-800">{formatCurrency(p.current_price)}</td>
                     <td className="text-slate-400 text-sm">{formatDate(p.price_as_of)}</td>
                   </tr>
                 ))}

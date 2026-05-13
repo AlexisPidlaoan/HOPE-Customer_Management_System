@@ -100,8 +100,8 @@ export default function CustomerSummaryReport() {
                       </div>
                     </td>
                     <td className="text-slate-500 text-sm">{r.payterm}</td>
-                    <td className="text-right font-semibold text-slate-700">{r.total_transactions}</td>
-                    <td className="text-right font-bold text-green-700">{formatCurrency(r.total_spend)}</td>
+                    <td className="text-right font-mono font-semibold text-slate-700">{r.total_transactions}</td>
+                    <td className="text-right font-mono font-bold text-green-700">{formatCurrency(r.total_spend)}</td>
                   </tr>
                 ))}
               </tbody>

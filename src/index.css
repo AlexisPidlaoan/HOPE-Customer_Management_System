@@ -126,6 +126,8 @@ body {
   cursor: pointer;
   user-select: none;
 }
+.data-table th.text-right, .data-table td.text-right { text-align: right; }
+.data-table th.text-center, .data-table td.text-center { text-align: center; }
 .data-table th:hover { background: #f1f5f9; color: #334155; }
 .data-table td {
   padding: 0.875rem 1rem;
