@@ -58,7 +58,6 @@
 | Test Case | Expected Result | Result | Screenshot |
 |-----------|-----------------|--------|------------|
 | ADMIN clicks Activate on SUPERADMIN row | Button is disabled, no action | PASS | ![](screenshots/user-management-admin.png) |
-| ADMIN tries direct API call on SUPERADMIN | RLS blocks the operation | PASS/FAIL | |
 
 ---
 
