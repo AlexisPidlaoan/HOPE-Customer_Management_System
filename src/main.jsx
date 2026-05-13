@@ -2,17 +2,18 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
+import { UserRightsProvider } from './context/UserRightsContext';
 import App from './App.jsx';
 import './index.css';
-import { UserRightsProvider } from './context/UserRightsContext';
 
- createRoot(document.getElementById('root')).render(
-    <React.StrictMode>
+createRoot(document.getElementById('root')).render(
+  <StrictMode>
+    <BrowserRouter>
       <AuthProvider>
-        <UserRightsProvider> {/* ADD THIS WRAPPER */}
+        <UserRightsProvider>
           <App />
-        </UserRightsProvider> {/* ADD CLOSING TAG */}
+        </UserRightsProvider>
       </AuthProvider>
-    </React.StrictMode>
-  );
-
+    </BrowserRouter>
+  </StrictMode>
+);
