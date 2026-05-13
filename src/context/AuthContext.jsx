@@ -97,45 +97,53 @@ export function AuthProvider({ children }) {
   useEffect(() => {
     let mounted = true;
 
-    // Global safety net: if onAuthStateChange never fires (network issue,
-    // Supabase unreachable, etc.) stop the loading screen after 12 seconds
-    const globalTimeout = setTimeout(() => {
-      if (mounted) {
-        console.warn('AuthContext: onAuthStateChange did not fire within 12s — forcing loading=false');
-        setLoading(false);
-      }
-    }, 12000);
-
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (event, session) => {
+    const initAuth = async () => {
+      try {
+        const { data: { session: initialSession } } = await supabase.auth.getSession();
         if (!mounted) return;
-        clearTimeout(globalTimeout);
 
-        setSession(session);
-
-        if (session?.user?.id) {
-          // For token refreshes, don't show loading spinner — profile is already set
-          if (event === 'TOKEN_REFRESHED' && lastGoodProfile.current) {
-            // Still fetch in the background to keep data fresh, but don't flash loading
-            fetchProfile(session.user.id);
-          } else {
-            await fetchProfile(session.user.id);
-          }
+        if (initialSession) {
+          setSession(initialSession);
+          await fetchProfile(initialSession.user.id);
         } else {
-          setProfile(null);
-          lastGoodProfile.current = null;
-          // DON'T clear pendingActivation here — it may have just been set
-          // by fetchProfile detecting an INACTIVE user. Clearing it would
-          // hide the "Account Pending Activation" banner on the login page.
           setLoading(false);
         }
+      } catch (err) {
+        console.error('Auth init error:', err);
+        setLoading(false);
       }
-    );
+
+      const { data: { subscription: authSubscription } } = supabase.auth.onAuthStateChange(
+        async (event, currentSession) => {
+          if (!mounted) return;
+          
+          setSession(currentSession);
+
+          if (currentSession?.user?.id) {
+            // For token refreshes or if we already have a profile, don't show loading spinner
+            if ((event === 'TOKEN_REFRESHED' || event === 'SIGNED_IN') && lastGoodProfile.current) {
+              fetchProfile(currentSession.user.id);
+            } else {
+              // Only show loading if we don't have a profile yet
+              if (!lastGoodProfile.current) setLoading(true);
+              await fetchProfile(currentSession.user.id);
+            }
+          } else {
+            setProfile(null);
+            lastGoodProfile.current = null;
+            setLoading(false);
+          }
+        }
+      );
+
+      return authSubscription;
+    };
+
+    let subscriptionPromise = initAuth();
 
     return () => {
       mounted = false;
-      clearTimeout(globalTimeout);
-      subscription.unsubscribe();
+      subscriptionPromise.then(sub => sub?.unsubscribe());
     };
   }, [fetchProfile]);
 

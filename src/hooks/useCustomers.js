@@ -1,4 +1,5 @@
 import { supabase } from '../lib/supabase';
+import { useAuth } from '../context/AuthContext';
 import { useState, useEffect, useCallback } from 'react';
 
 function makeStamp(action, email) {
@@ -7,6 +8,7 @@ function makeStamp(action, email) {
 }
 
 export function useCustomers({ includeInactive = false } = {}) {
+  const { session } = useAuth();
   const [customers, setCustomers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -21,7 +23,9 @@ export function useCustomers({ includeInactive = false } = {}) {
     setLoading(false);
   }, [includeInactive]);
 
-  useEffect(() => { fetch(); }, [fetch]);
+  useEffect(() => { 
+    if (session) fetch(); 
+  }, [fetch, session]);
 
   const addCustomer = async (payload) => {
     const { error } = await supabase.from('customer').insert([payload]);

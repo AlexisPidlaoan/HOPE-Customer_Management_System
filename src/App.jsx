@@ -18,10 +18,7 @@ import ProductRevenueReport from './pages/admin/reports/ProductRevenueReport';
 import DashboardPage from './pages/admin/DashboardPage';
 import RbacSettingsPage from './pages/admin/RbacSettingsPage';
 import AuditLogsPage from './pages/admin/AuditLogsPage';
-import { Routes, Route } from 'react-router-dom';
-import ProtectedRoute from './components/ProtectedRoute';
-import Dashboard from './pages/Dashboard';
-import Login from './pages/Login';
+import UserDashboardPage from './pages/UserDashboardPage';
 
 export default function App() {
   return (
@@ -40,7 +37,8 @@ export default function App() {
             </PrivateRoute>
           }
         >
-          <Route index element={<Navigate to="/customers" replace />} />
+          <Route index element={<Navigate to="/dashboard" replace />} />
+          <Route path="dashboard" element={<UserDashboardPage />} />
           <Route path="customers" element={<CustomerListPage />} />
           <Route path="customers/:custno" element={<CustomerDetailPage />} />
           <Route path="sales" element={<SalesListPage />} />
@@ -60,21 +58,6 @@ export default function App() {
         {/* Catch-all */}
         <Route path="*" element={<Navigate to="/customers" replace />} />
       </Routes>
-
-        <Routes>
-      {/* Public route */}
-      <Route path="/login" element={<Login />} />
-
-      {/* Protected route */}
-      <Route
-        path="/dashboard"
-        element={
-          <ProtectedRoute>
-            <Dashboard />
-          </ProtectedRoute>
-        }
-      />
-    </Routes>
     </ToastProvider>
   );
 }

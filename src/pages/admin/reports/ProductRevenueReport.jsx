@@ -102,8 +102,8 @@ export default function ProductRevenueReport() {
                       <td className="font-mono text-xs text-slate-400">{r.prodcode}</td>
                       <td className="font-semibold text-slate-800">{r.description}</td>
                       <td className="text-slate-500 text-sm">{r.unit}</td>
-                      <td className="text-right font-semibold text-slate-700">{Number(r.total_qty_sold).toLocaleString()}</td>
-                      <td className="text-right font-bold text-green-700">{formatCurrency(r.total_revenue)}</td>
+                      <td className="text-right font-mono font-semibold text-slate-700">{Number(r.total_qty_sold).toLocaleString()}</td>
+                      <td className="text-right font-mono font-bold text-green-700">{formatCurrency(r.total_revenue)}</td>
                       <td className="text-right w-32">
                         <div className="flex items-center justify-end gap-2">
                           <div className="w-16 h-1.5 bg-slate-100 rounded-full overflow-hidden">
