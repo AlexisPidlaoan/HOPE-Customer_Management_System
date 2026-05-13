@@ -1,151 +1,130 @@
-# HOPE, INC. — Customer Management System (HopeCMS)
+# 🏢 HOPE, INC. — Customer Management System (HopeCMS)
 
-A full-stack Customer Management System built for Hope, Inc. using **React + Vite + Tailwind CSS** with **Supabase** (PostgreSQL) as the backend. Manages customers with full CRUD, provides read-only views for sales, products, and price history, and enforces role-based access control across three user types.
+A full-stack Customer Management System built for **Hope, Inc.** as a Capstone Project for **New Era University**. This system manages customer lifecycles while providing read-only insights into historical sales and product data.
 
-## Features
+🔗 **Live Demo:** [https://hopecms.netlify.app](https://hopecms.netlify.app)
 
-- **Customer Management**: View, add, edit, and soft-delete customer records
-- **Sales History**: View customer transactions and drill down into sales detail line items
-- **Product Catalogue**: Read-only product listing with current prices from price history
-- **Reports**: Customer Sales Summary, Top Customers, Product Revenue
-- **Admin Module**: User management with activate/deactivate controls
-- **Role-Based Access Control**: SUPERADMIN, ADMIN, USER with 9 granular rights
-- **Soft Delete**: Customers are deactivated (never hard-deleted), recoverable by ADMIN/SUPERADMIN
-- **Audit Logs**: Global activity tracking (SUPERADMIN only)
-- **Authentication**: Email/Password + Google OAuth via Supabase Auth
+---
 
-## Tech Stack
+## 👥 The Team (M-Roles)
+
+| Role | Name | Primary Responsibilities |
+|------|------|--------------------------|
+| **M1: Project Lead** | Alexis B. Pidlaoan | Sprint Planning, Release PRs, Lead Architect |
+| **M2: Frontend Dev** | Xander G. Macayan | UI/UX, Customer Management Views, Components |
+| **M3: DB Engineer** | Alvin M. Antonio Jr.| RLS Policies, SQL Views, Schema Migrations |
+| **M4: Rights & Auth** | Charenze Jan N. Buenafe | RBAC Logic, Google OAuth, Module Access |
+| **M5: QA / Docs** | Klein C. Balazon | Vitest Testing, Documentation, README Maintenance |
+
+---
+
+## 🛑 Core Rules (Mandatory Compliance)
+
+These rules are **non-negotiable** and enforced at the database (RLS) and application levels:
+
+- **No Hard Deletes** — The `DELETE` keyword is strictly prohibited. All customer removals are Soft-Deletes via `record_status = 'INACTIVE'`.
+- **User Privacy** — `INACTIVE` customers are completely invisible to `USER` accounts in all lists, searches, and direct API calls.
+- **Read-Only Integrity** — The `sales`, `salesDetail`, `product`, and `priceHist` tables are view-only for all roles. No addition or modification is permitted.
+- **Superadmin Protection** — `ADMIN` roles cannot modify `SUPERADMIN` account rights or statuses.
+
+---
+
+## 📐 Database Architecture
+
+The system operates on **5 core data tables** and a dedicated **RBAC (Role-Based Access Control)** schema.
+
+### Entity Relationship Diagram (ERD)
+
+![HopeCMS Entity Relationship Diagram](docs\db_erd.png)
+
+> The schema ensures data integrity and strictly enforces the separation between CRUD-enabled customer data and historical sales records.
+
+### Access Matrix (Rights Management)
+
+| User Type | Customer CRUD | Sales/Product View | User Management |
+|-----------|---------------|--------------------|-----------------|
+| **SUPERADMIN** | Full (incl. Soft-Delete) | ✅ Yes | Full Control |
+| **ADMIN** | Add/Edit (No Delete) | ✅ Yes | Activation Only |
+| **USER** | View Active Only | ✅ Yes | ❌ None |
+
+---
+
+## 🛠 Tech Stack
 
 | Layer | Technology |
-|---|---|
-| Frontend | React 19 + Vite |
-| Styling | Tailwind CSS v4 |
-| Backend / DB | Supabase (PostgreSQL) |
-| Auth | Supabase Auth (Email + Google OAuth 2.0) |
-| State | React Context API |
-| Deployment | Netlify |
+|-------|------------|
+| **Frontend** | React 19 (Vite) + Tailwind CSS v4 |
+| **Backend** | Supabase (PostgreSQL) |
+| **Auth** | Supabase Auth (Email + Google OAuth 2.0) |
+| **Deployment** | Netlify |
 
-## Getting Started
+---
+
+## 🚀 Getting Started
 
 ### Prerequisites
 
 - Node.js (v18 or higher)
 - npm
-- A Supabase project (free tier)
 
 ### Installation
 
-1. **Clone the repository**:
+1. **Clone the repository:**
    ```bash
    git clone https://github.com/AlexisPidlaoan/HOPE-Customer_Management_System.git
-   cd HOPE-Customer_Management_System
    ```
 
-2. **Install dependencies**:
+2. **Install dependencies:**
    ```bash
    npm install
    ```
 
-3. **Configure environment variables** — copy `.env.example` to `.env` and fill in your Supabase credentials:
-   ```bash
-   cp .env.example .env
-   ```
-   ```
-   VITE_SUPABASE_URL=https://your-project.supabase.co
-   VITE_SUPABASE_ANON_KEY=your-anon-key-here
+3. **Configure Environment:**
+
+   Create a `.env` file in the root directory:
+   ```env
+   VITE_SUPABASE_URL=your_supabase_project_url
+   VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
    ```
 
-4. **Run database migrations** — execute the SQL files in `supabase/migrations/` in order (001–013) in the Supabase SQL Editor.
-
-5. **Start the development server**:
+4. **Run Development Server:**
    ```bash
    npm run dev
    ```
 
-6. Open your browser at `http://localhost:5173`
+---
 
-### Build for Production
+## 🔄 Git Workflow
 
-```bash
-npm run build
-```
+We follow a strict branching strategy to ensure code stability:
 
-Output is in the `dist/` directory, ready for Netlify deployment.
+- `main` — Production-ready code only.
+- `dev` — Stable development base for integration.
+- `feat/*`, `fix/*`, `db/*`, `test/*` — Feature-specific branches.
 
-## Project Structure
-
-```
-src/
-├── components/
-│   ├── customers/      # AddCustomerModal, EditCustomerModal, SoftDeleteConfirmDialog
-│   ├── guards/         # PrivateRoute, AdminRoute, SuperAdminRoute
-│   ├── sales/          # SalesDetailModal
-│   └── ui/             # Badge, Modal, Spinner, Toast, Tooltip, Skeleton, etc.
-├── context/
-│   └── AuthContext.jsx  # Global auth session + profile state
-├── hooks/
-│   ├── useCustomers.js  # Customer CRUD operations
-│   ├── useSales.js      # Sales data (read-only)
-│   ├── useProducts.js   # Product data (read-only)
-│   ├── useRights.js     # User rights from DB
-│   ├── useUsers.js      # Admin user management
-│   ├── useReports.js    # Report data
-│   ├── useDashboard.js  # Dashboard KPIs
-│   └── useAuditLogs.js  # Audit log entries
-├── lib/
-│   ├── supabase.js      # Supabase client init
-│   └── formatters.js    # Currency, date, string formatters
-├── pages/
-│   ├── LoginPage.jsx
-│   ├── AuthCallbackPage.jsx
-│   ├── CustomerListPage.jsx
-│   ├── CustomerDetailPage.jsx
-│   ├── SalesListPage.jsx
-│   ├── ProductCataloguePage.jsx
-│   └── admin/
-│       ├── UserManagementPage.jsx
-│       ├── DeletedCustomersPage.jsx
-│       ├── DashboardPage.jsx
-│       ├── AuditLogsPage.jsx
-│       ├── RbacSettingsPage.jsx
-│       └── reports/
-│           ├── CustomerSummaryReport.jsx
-│           ├── TopCustomersReport.jsx
-│           └── ProductRevenueReport.jsx
-├── App.jsx              # Route definitions
-└── main.jsx             # Entry point
-DB/                       # Standalone SQL scripts (fixes, promotions)
-supabase/migrations/      # Ordered SQL migrations (001–013)
-delivarables/             # Project guide + sprint deliverables docs
-```
-
-## User Roles
-
-| Role | Access |
-|---|---|
-| **USER** | View active customers, sales, products. Read-only. |
-| **ADMIN** | Add/edit customers, manage users, view reports, access deleted customers. |
-| **SUPERADMIN** | Full control: soft-delete customers, manage admins, dashboard, audit logs, RBAC. |
-
-## Core Rules
-
-1. **No hard deletes** — `DELETE` keyword never appears in app code. Customer removals use `record_status = 'INACTIVE'`.
-2. **INACTIVE customers invisible to USER** — enforced at both RLS and application level.
-3. **View-only tables** — sales, salesDetail, product, priceHist have zero add/edit/delete controls.
-4. **SUPERADMIN protection** — ADMIN cannot modify SUPERADMIN accounts (UI disabled + RLS guard).
-
-## Database
-
-- **5 core tables**: customer (CRUD), sales, salesDetail, product, priceHist (view-only)
-- **3 SQL views**: product_current_price, customer_sales_summary, product_revenue
-- **Auth tables**: profiles, modules, rights, user_module_rights
-- **RLS**: Row-Level Security on all tables
-
-## Deployment
-
-Configured for **Netlify** via `netlify.toml`. Set `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` as environment variables in the Netlify dashboard.
+**The Flow:**
+> Branch from `dev` → Create PR → Teammate Review → Merge to `dev` → Release PR to `main` at the end of the Sprint.
 
 ---
 
+## 📝 Sprint Logs
+
+### Sprint 1: Foundation
+- Initial Supabase Schema & Migrations *(M3)*
+- Authentication & Google OAuth 2.0 Setup *(M4)*
+- Basic UI Shell and Customer Listing *(M2)*
+
+### Sprint 2: Core Logic & Security
+- Implementation of Soft-Delete logic & Deleted Customers Panel *(M1)*
+- Detailed Sales History Drill-down *(M2)*
+- 27-case Rights Test Matrix implementation *(M5)*
+
+---
+
+<div align="center">
+
 **New Era University — College of Computer Studies**
-Academic Year 2025–2026
+
+*Information Management Course | AY 2025–2026*
+
+</div>
