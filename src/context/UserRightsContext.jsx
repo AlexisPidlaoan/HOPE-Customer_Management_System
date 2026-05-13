@@ -8,7 +8,7 @@
 // ============================================================
 
 import { createContext, useContext, useEffect, useState } from 'react';
-import { supabase } from '../lib/supabaseClient';
+import { supabase } from '../lib/supabase';
 import { useAuth } from './AuthContext';
 
 // ── Default rights (all zero = no access) ──────────────────

@@ -12,7 +12,7 @@
 // ============================================================
 
 import { useEffect, useState } from 'react';
-import { supabase }            from '../lib/supabaseClient';
+import { supabase }            from '../lib/supabase';
 import { useAuth }             from '../context/AuthContext';
 
 export default function AdminPage() {
