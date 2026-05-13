@@ -35,7 +35,7 @@ The system operates on **5 core data tables** and a dedicated **RBAC (Role-Based
 
 ### Entity Relationship Diagram (ERD)
 
-![HopeCMS Entity Relationship Diagram](docs/db_erd.png)
+![HopeCMS Entity Relationship Diagram](docs/erd.png)
 
 > The schema ensures data integrity and strictly enforces the separation between CRUD-enabled customer data and historical sales records.
 
