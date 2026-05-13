@@ -2,7 +2,7 @@
 
 A full-stack Customer Management System built for **Hope, Inc.** as a Capstone Project for **New Era University**. This system manages customer lifecycles while providing read-only insights into historical sales and product data.
 
-🔗 **Live Demo:** [https://hopecms.netlify.app](https://hopecms.netlify.app)
+🔗 **Live Demo:** [https://hopecms.netlify.app](https://hopecustmansys.netlify.app/login)
 
 ---
 
