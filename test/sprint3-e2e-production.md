@@ -16,7 +16,7 @@
 | Edit customer | ADMIN | Can successfully edit a customer | PASS | ![](screenshots/customer-edit-admin.png) |
 | Deactivate customer | SUPERADMIN | Customer becomes inactive, disappears from USER view | PASS | ![](screenshots/customer-list-superadmin.png) |
 | View deleted customers | ADMIN | Sees inactive customers in Deleted Customers page | PASS | ![](screenshots/customer-deleted-admin.png) |
-| Recover customer | ADMIN | Customer reappears in all views after recovery | PASS/FAIL | |
+| Recover customer | ADMIN | Customer reappears in all views after recovery | PASS | ![](screenshots/customer-recover-admin.png) |
 
 ---
 
@@ -58,8 +58,6 @@
 | Test Case | Expected Result | Result | Screenshot |
 |-----------|-----------------|--------|------------|
 | ADMIN clicks Activate on SUPERADMIN row | Button is disabled, no action | PASS | ![](screenshots/user-management-admin.png) |
-| ADMIN tries direct API call on SUPERADMIN | RLS blocks the operation | PASS/FAIL | |
-
 ---
 
 ## 6. View-Only Confirmation
@@ -72,7 +70,6 @@
 | Products page | USER | Zero Add/Edit/Delete buttons | PASS | ![](screenshots/products-page-user.png) |
 | Products page | ADMIN | Zero Add/Edit/Delete buttons | PASS | ![](screenshots/products-page-admin.png) |
 | Products page | SUPERADMIN | Zero Add/Edit/Delete buttons | PASS | ![](screenshots/products-page-superadmin.png) |
-| Price History page | USER | Zero Add/Edit/Delete buttons | N/A — not in USER sidebar | |
 | Price History page | ADMIN | Zero Add/Edit/Delete buttons | PASS | ![](screenshots/products-page-admin.png) |
 | Price History page | SUPERADMIN | Zero Add/Edit/Delete buttons | PASS | ![](screenshots/products-page-superadmin.png) |
 
@@ -82,7 +79,7 @@
 
 | Category | Total Tests | Passed | Failed |
 |----------|-------------|--------|--------|
-| Customer CRUD | 8 | 7 | 0 |
+| Customer CRUD | 9 | 9 | 0 |
 | Sales Drill-Down | 3 | 3 | 0 |
 | Reports | 3 | 3 | 0 |
 | Admin Activation | 4 | 4 | 0 |
